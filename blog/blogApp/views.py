@@ -1,4 +1,5 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
+from django.contrib.auth.models import User
 from .models import post
 from django.views.generic import (
     ListView, 
@@ -21,7 +22,20 @@ class PostListView(ListView):
     model = post
     template_name = 'blogApp/home.html' #<app><model>_<viewtype>.html
     context_object_name = 'posts'
+    # ordering = ['-datePosted']
+    paginate_by = 8
+    
+class UserPostListView(ListView):
+    model = post
+    template_name = 'blogApp/user_posts.html' #<app><model>_<viewtype>.html
+    context_object_name = 'posts'
     ordering = ['-datePosted']
+    paginate_by = 8
+    
+    def get_queryset(self):
+        user = get_object_or_404(User, username=self.kwargs.get('username'))
+        return post.objects.filter(author=user).order_by('-datePosted')
+    
     
 class PostDetailView(DetailView):
     model = post
