@@ -1,4 +1,4 @@
-# Blog Site
+# Blog Site Django
 ### Usuage
 * To run the web app `python manage.py runserver`
 ### Features
